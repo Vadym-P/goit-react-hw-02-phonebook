@@ -8,13 +8,17 @@ class Form extends Component {
 
   handleChange = event => {
     const { name, value } = event.currentTarget;
-    this.setState({ [name]: value, id: shortid.generate() });
+    this.setState({ id: shortid.generate(), [name]: value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
+    // if (this.state.name.includes(App.state.contacts)) {
+    //   alert(`${this.state.name} is already in contacts`);
+    // } else {
     this.props.onSubmit(this.state);
     this.resetForm();
+    // }
   };
 
   resetForm = () => {
