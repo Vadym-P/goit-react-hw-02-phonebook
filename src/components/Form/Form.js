@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import PropTypes from 'prop-types';
+import s from './Form.module.css';
+
 class Form extends Component {
   state = {
     name: '',
@@ -13,12 +16,8 @@ class Form extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    // if (this.state.name.includes(App.state.contacts)) {
-    //   alert(`${this.state.name} is already in contacts`);
-    // } else {
     this.props.onSubmit(this.state);
     this.resetForm();
-    // }
   };
 
   resetForm = () => {
@@ -27,11 +26,11 @@ class Form extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h1>Phonebook</h1>
-        <label>
-          Name
+      <form className={s.form__container} onSubmit={this.handleSubmit}>
+        <label className={s.label}>
+          <span className={s.name__input}>Name</span>
           <input
+            className={s.input}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -43,9 +42,10 @@ class Form extends Component {
             onChange={this.handleChange}
           />
         </label>
-        <label>
-          Number
+        <label className={s.label}>
+          <span className={s.name__input}>Number</span>
           <input
+            className={s.input}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -55,10 +55,17 @@ class Form extends Component {
             onChange={this.handleChange}
           />
         </label>
-        <button type="submit">Add contact</button>
+        <button type="submit" className={s.add__btn}>
+          Add contact
+        </button>
       </form>
     );
   }
 }
+
+Form.propTypes = {
+  name: PropTypes.string,
+  number: PropTypes.string,
+};
 
 export default Form;

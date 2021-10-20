@@ -3,6 +3,7 @@ import Form from './components/Form';
 import Section from './components/Section';
 import ContactsList from './components/ContactsList';
 import Filter from './components/Filter';
+import s from './App.module.css';
 
 class App extends Component {
   state = {
@@ -16,14 +17,18 @@ class App extends Component {
   };
 
   formOnSubmitHandler = data => {
-    this.setState(prevState => ({
-      contacts: [
-        ...prevState.contacts,
-        {
-          ...data,
-        },
-      ],
-    }));
+    this.state.contacts.some(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase(),
+    )
+      ? alert(`${data.name} is already in contacts.`)
+      : this.setState(prevState => ({
+          contacts: [
+            ...prevState.contacts,
+            {
+              ...data,
+            },
+          ],
+        }));
   };
 
   changeFilter = e => {
@@ -37,17 +42,28 @@ class App extends Component {
     );
   };
 
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const filteredContact = this.getFilteredContact();
 
     return (
-      <div>
+      <div className={s.container}>
+        <h1 className={s.title}>Phonebook</h1>
         <Section>
           <Form onSubmit={this.formOnSubmitHandler} />
         </Section>
-        <Filter value={this.state.filter} onChange={this.changeFilter} />
-        <Section title="Contacts">
-          <ContactsList contactsList={filteredContact} />
+        <h2 className={s.title_contacts}>Contacts</h2>
+        <Section>
+          <Filter value={this.state.filter} onChange={this.changeFilter} />
+          <ContactsList
+            contactsList={filteredContact}
+            onDeleteContact={this.deleteContact}
+          />
         </Section>
       </div>
     );
